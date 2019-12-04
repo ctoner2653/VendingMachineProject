@@ -5,6 +5,8 @@
  */
 package com.sg.VendingMachine.service;
 
+import com.sg.VendingMachine.dao.VendingMachineAuditDao;
+import com.sg.VendingMachine.dao.VendingMachineAuditDaoFileImpl;
 import com.sg.VendingMachine.dao.VendingMachineDao;
 import com.sg.VendingMachine.dao.VendingMachineDaoFileImpl;
 import com.sg.VendingMachine.dto.Item;
@@ -26,7 +28,8 @@ import org.junit.jupiter.api.Test;
 public class VendingMachineServiceLayerTest {
     
     VendingMachineDao dao = new VendingMachineDaoFileImpl();
-    VendingMachineServiceLayer service = new VendingMachineServiceLayerImpl(dao);
+    VendingMachineAuditDao auditDao = new VendingMachineAuditDaoFileImpl();
+    VendingMachineServiceLayer service = new VendingMachineServiceLayerImpl(dao,auditDao);
     
     public VendingMachineServiceLayerTest() {
     }

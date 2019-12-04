@@ -25,7 +25,7 @@ public class VendingMachineController {
         this.service = service;
     }
 
-    public void run() throws InsufficientFundsException, NoItemInventoryException, VendingMachineException {
+    public void run()  {
         boolean keepGoing = true;
         int menuSelection = 0;
 
@@ -69,26 +69,22 @@ public class VendingMachineController {
         view.printcurrentBalance(service.getBalance());
     }
 
-    public void purchaseItem() throws InsufficientFundsException, NoItemInventoryException, VendingMachineException {
-        view.getAllItems(service.getAllItems());      
-      
-       
-            
-          
+    public void purchaseItem() {
+        view.getAllItems(service.getAllItems());
+
         try {
-          service.purchaseItem(service.getItem(view.getItemSelection()));
-          view.printeItemPurchased();
-       
-        }catch ( VendingMachineException | InsufficientFundsException | NoItemInventoryException e)
-                    {
-                       
-                        view.displayErrorMessage(e.getMessage());
-                        
-              }
-       
-        
+            service.purchaseItem(service.getItem(view.getItemSelection()));
+            view.printeItemPurchased();
+
+        } catch (VendingMachineException | InsufficientFundsException | NoItemInventoryException e) {
+
+            view.displayErrorMessage(e.getMessage());
+
+        }
+
     }
-    public void giveChange(){
+
+    public void giveChange() {
         view.recieveChange(service.recieveChange());
     }
 }

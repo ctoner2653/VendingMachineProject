@@ -5,8 +5,8 @@
  */
 package com.sg.VendingMachine.ui;
 
+import com.sg.VendingMachine.dao.VendingMachineAuditDao;
 import com.sg.VendingMachine.dao.VendingMachineDao;
-import com.sg.VendingMachine.dao.VendingMachineDaoFileImpl;
 import com.sg.VendingMachine.dao.VendingMachineException;
 import com.sg.VendingMachine.dto.Item;
 import com.sg.VendingMachine.dto.VendingMachineChange;
@@ -23,10 +23,11 @@ import java.util.List;
 public class VendingMachineServiceLayerImpl implements VendingMachineServiceLayer {
 
     BigDecimal money = new BigDecimal("0");
-    VendingMachineDao dao = new VendingMachineDaoFileImpl();
-
-    public VendingMachineServiceLayerImpl(VendingMachineDao Dao) {
-        //this.dao = dao;
+    VendingMachineDao dao;
+    VendingMachineAuditDao auditDao;
+    public VendingMachineServiceLayerImpl(VendingMachineDao dao, VendingMachineAuditDao auditDao) {
+        this.dao = dao;
+        this.auditDao = auditDao;
     }
 
     @Override
@@ -104,6 +105,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     }
        return dao.getItem(name);
     }
+    
     @Override
     public List<Item> getAllItems(){
         return dao.getAll();

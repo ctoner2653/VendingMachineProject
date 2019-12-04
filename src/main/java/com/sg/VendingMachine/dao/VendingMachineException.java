@@ -19,6 +19,8 @@ public class VendingMachineException extends Exception {
     public VendingMachineException(){
         
     }
-    
+    public VendingMachineException(String message, Throwable cause){
+        super(message,cause);
+    }
     
 }

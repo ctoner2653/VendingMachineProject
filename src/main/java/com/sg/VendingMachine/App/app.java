@@ -6,30 +6,21 @@
 package com.sg.VendingMachine.App;
 
 import com.sg.VendingMachine.controller.VendingMachineController;
-import com.sg.VendingMachine.dao.VendingMachineDao;
-import com.sg.VendingMachine.dao.VendingMachineDaoFileImpl;
-import com.sg.VendingMachine.dao.VendingMachineException;
-import com.sg.VendingMachine.service.InsufficientFundsException;
-import com.sg.VendingMachine.service.NoItemInventoryException;
-import com.sg.VendingMachine.service.VendingMachineServiceLayer;
-import com.sg.VendingMachine.ui.UserIO;
-import com.sg.VendingMachine.ui.UserIOConsoleImpl;
-import com.sg.VendingMachine.ui.VendingMachineServiceLayerImpl;
-import com.sg.VendingMachine.ui.VendingMachineView;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author colby
  */
 public class app {
-
-    public static void main(String[] args) throws InsufficientFundsException, NoItemInventoryException , VendingMachineException{
-        UserIO io = new UserIOConsoleImpl();
-        VendingMachineView view = new VendingMachineView(io);
-        VendingMachineDao dao = new VendingMachineDaoFileImpl();
-        VendingMachineServiceLayer service = new VendingMachineServiceLayerImpl(dao);
-        VendingMachineController controller = new VendingMachineController(view, service);
-
+    
+    public static void main(String[] args)  {
+       
+        ApplicationContext ctx =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+        VendingMachineController controller 
+                = ctx.getBean("controller", VendingMachineController.class);
         controller.run();
     }
 }

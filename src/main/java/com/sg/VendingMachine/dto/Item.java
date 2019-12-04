@@ -35,4 +35,8 @@ public class Item {
     public int getQuanity(){
         return Quanity;
     }
+    @Override
+    public String toString(){
+        return Name;
+    }
 }
