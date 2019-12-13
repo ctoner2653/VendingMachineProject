@@ -5,8 +5,6 @@
  */
 package com.sg.FlooringMastery.ui;
 
-import java.time.LocalDate;
-
 /**
  *
  * @author colby
@@ -31,6 +29,4 @@ public interface UserIo {
     long readLong(String prompt, long min, long max);
 
     String readString(String prompt);
-    
-    LocalDate getDate(String prompt);
 }

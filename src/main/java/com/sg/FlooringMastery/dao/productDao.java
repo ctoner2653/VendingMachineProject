@@ -6,7 +6,6 @@
 package com.sg.FlooringMastery.dao;
 
 import com.sg.FlooringMastery.dto.product;
-import java.util.List;
 
 /**
  *
@@ -14,5 +13,4 @@ import java.util.List;
  */
 public interface productDao {
     product getProduct(String productType) throws FlooringMasteryException;
-    List<product> getAllProducts() throws FlooringMasteryException;
 }

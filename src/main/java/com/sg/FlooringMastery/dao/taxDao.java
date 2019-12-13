@@ -6,7 +6,6 @@
 package com.sg.FlooringMastery.dao;
 
 import com.sg.FlooringMastery.dto.tax;
-import java.util.List;
 
 /**
  *
@@ -14,5 +13,4 @@ import java.util.List;
  */
 public interface taxDao {
     tax getTax(String state) throws FlooringMasteryException;
-    List<tax> getAllStates() throws FlooringMasteryException;
 }

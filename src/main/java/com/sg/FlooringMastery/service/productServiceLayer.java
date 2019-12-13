@@ -7,7 +7,6 @@ package com.sg.FlooringMastery.service;
 
 import com.sg.FlooringMastery.dao.FlooringMasteryException;
 import com.sg.FlooringMastery.dto.product;
-import java.util.List;
 
 /**
  *
@@ -15,5 +14,4 @@ import java.util.List;
  */
 public interface productServiceLayer {
         product getProduct(String productType) throws FlooringMasteryException;
-        List<product> getAllProducts() throws FlooringMasteryException;
 }

@@ -5,8 +5,6 @@
  */
 package com.sg.FlooringMastery.ui;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -118,25 +116,6 @@ public class UserIoConsoleImpl implements UserIo {
         System.out.println(prompt);
         String d = sc.nextLine();
         return d;
-    }
-
-    @Override
-    public LocalDate getDate(String prompt) {
-        String date = readString("Please Enter Date (MM/dd/yyyy)");
-        boolean isOkay = true;
-        LocalDate ld = null;
-        do {
-
-            try {
-                 ld = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-            } catch (Exception e) {
-                readString("Please follow date format");
-                date = readString("Please Enter Date (MM/dd/yyyy)");
-                isOkay = false;
-            }
-            isOkay = true;
-        } while (isOkay != true);
-        return ld;
     }
 
 }

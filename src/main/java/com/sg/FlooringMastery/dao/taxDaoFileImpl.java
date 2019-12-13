@@ -10,9 +10,7 @@ import com.sg.FlooringMastery.dto.tax;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -60,11 +58,4 @@ public class taxDaoFileImpl implements taxDao {
         }
         scanner.close();
     }
-
-    @Override
-    public List<tax> getAllStates() throws FlooringMasteryException {
-       readFile();
-       return new ArrayList<tax>(taxRates.values());
-    }
-     
 }
