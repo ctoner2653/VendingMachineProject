@@ -8,12 +8,16 @@ package com.sg.FlooringMastery.service;
 import com.sg.FlooringMastery.dao.FlooringMasteryDao;
 import com.sg.FlooringMastery.dao.FlooringMasteryException;
 import com.sg.FlooringMastery.dto.order;
+import com.sg.FlooringMastery.dto.product;
+import com.sg.FlooringMastery.dto.tax;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
  *
  * @author colby
  */
+
 public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLayer {
 
     productServiceLayer productService;
@@ -27,13 +31,18 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
 
     @Override
-    public List<order> displayOrders() throws FlooringMasteryException {
-        return dao.displayOrders();
+    public List<order> displayOrders(LocalDate date) throws FlooringMasteryException {
+        return dao.displayOrders(date);
     }
 
     @Override
-    public void addOrder(order newOrder) throws FlooringMasteryException {
-        newOrder.setOrderNumber(dao.displayOrders().size() + 1);
+    public void addOrder(order newOrder,LocalDate date) throws FlooringMasteryException {
+        
+        int number = dao.readNumber() + 1;
+        if(number <= 0){
+            number = 1;
+        }
+        newOrder.setOrderNumber(number);
         //Get Prodcuts and then get products costPersquareFoot and set to newOrders cost 
         newOrder.setCostPerSquareFoot((productService.getProduct(newOrder.getProductType())).getCostPerSquareFoot());
         newOrder.setLaborCostPerSquareFoot((productService.getProduct(newOrder.getProductType())).getLaborCostPerSquareFoot());
@@ -44,11 +53,13 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         double actualTaxRate = newOrder.getTaxRate() / 100;
         newOrder.setTax((newOrder.getMaterialCost() + newOrder.getLaborCost()) * actualTaxRate);
         newOrder.setTotal(newOrder.getLaborCost() + newOrder.getMaterialCost() + newOrder.getTax());
-        dao.addOrder(newOrder);
+        dao.writeNumber(newOrder.getOrderNumber());
+        dao.addOrder(newOrder,date);
+        
     }
 
     @Override
-    public order editOrder(int orderNumber, order newOrder) throws FlooringMasteryException {
+    public order editOrder(int orderNumber, order newOrder,LocalDate date) throws FlooringMasteryException {
         newOrder.setCostPerSquareFoot((productService.getProduct(newOrder.getProductType())).getCostPerSquareFoot());
         newOrder.setLaborCostPerSquareFoot((productService.getProduct(newOrder.getProductType())).getLaborCostPerSquareFoot());
         newOrder.setLaborCost((newOrder.getArea() * newOrder.getLaborCostPerSquareFoot()));
@@ -58,12 +69,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         double actualTaxRate = newOrder.getTaxRate() / 100;
         newOrder.setTax((newOrder.getMaterialCost() + newOrder.getLaborCost()) * actualTaxRate);
         newOrder.setTotal(newOrder.getLaborCost() + newOrder.getMaterialCost() + newOrder.getTax());
-        return dao.editOrder(orderNumber, newOrder);
+        return dao.editOrder(orderNumber, newOrder,date);
     }
 
     @Override
-    public void removeOrder(int orderNumber) throws FlooringMasteryException {
-        dao.removeOrder(orderNumber);
+    public void removeOrder(int orderNumber,LocalDate date) throws FlooringMasteryException {
+        dao.removeOrder(orderNumber,date);
     }
 
     @Override
@@ -72,7 +83,14 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
 
     @Override
-    public order getOrder(int orderNumber) throws FlooringMasteryException {
-        return dao.getOrder(orderNumber);
+    public order getOrder(int orderNumber,LocalDate date) throws FlooringMasteryException {
+        return dao.getOrder(orderNumber,date);
     }
+    public List<product> getAllProducts() throws FlooringMasteryException{
+        return productService.getAllProducts();
+    }
+    public List<tax> getAllStates() throws FlooringMasteryException{
+        return taxService.getAllStates();
+    }
+    
 }

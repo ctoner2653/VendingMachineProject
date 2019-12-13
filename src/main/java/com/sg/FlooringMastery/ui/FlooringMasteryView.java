@@ -6,6 +6,9 @@
 package com.sg.FlooringMastery.ui;
 
 import com.sg.FlooringMastery.dto.order;
+import com.sg.FlooringMastery.dto.product;
+import com.sg.FlooringMastery.dto.tax;
+import java.time.LocalDate;
 
 import java.util.List;
 
@@ -34,16 +37,21 @@ public class FlooringMasteryView {
         return io.readInt("Please Enter Your Selection", 1, 6);
     }
 
-    public order getOrderInfo() {
+    public void displayErrorMessage(String errorMsg) {
+        io.print("=== ERROR ===");
+        io.readString(errorMsg);
+    }
+
+    public order getOrderInfo(List<product> products, List<tax> states) {
         String customerName = io.readString("What is the customers name for the order?");
         io.print("======");
         io.print("What state is the order being ordered in?");
-        String state = displayStates();
+        String state = displayStates(states);
         io.print("======");
         double area = io.readDouble("What is the area of the order?");
         io.print("======");
         io.print("What is the product type?");
-        String productType = displayProducts();
+        String productType = displayProducts(products);
         order newOrder = new order();
 
         newOrder.setArea(area);
@@ -75,64 +83,72 @@ public class FlooringMasteryView {
         io.readString("==================");
         return returnInt;
     }
-    public int getEditOrder(){
+
+    public int getEditOrder() {
         io.print("* Edit Order *");
         int returnInt = io.readInt("What is the Order Number of the order you would like to edit?");
         io.readString("===================");
         return returnInt;
     }
-    public String displayStates() {
-        io.print("* 1. OH");
-        io.print("* 2. PA");
-        io.print("* 3. MI");
-        io.print("* 4. IN");
-        int selection = io.readInt("Please Enter Your Selection", 1, 4);
+
+    public String displayStates(List<tax> states) {
+        int i = 0;
+        for (tax newTax : states) {
+            i = i + 1;
+            io.print(i + ". " + newTax.getState());
+        }
+        boolean actualState = true;
         String state = "";
-        switch (selection) {
-            case 1:
-                state = "OH";
-                break;
-            case 2:
-                state = "PA";
-            case 3:
-                state = "MI";
-            case 4:
-                state = "IN";
-            default:
-                break;
+
+        while (actualState) {
+            for (tax newTax : states) {
+
+                if (state.equals(newTax.getState())) {
+                    actualState = false;
+                    break;
+                } else {
+                    actualState = true;
+                }
+
+            }
+            if (actualState) {
+                state = io.readString("Which state do you live in?(Enter Initals Only(ALL CAPS)");
+            }
 
         }
+
         return state;
 
     }
 
-    public String displayProducts() {
-        io.print("* 1. Carpet");
-        io.print("* 2. Laminate");
-        io.print("* 3. Tile");
-        io.print("* 4. Wood");
-        int selection = io.readInt("Please Enter Your Selection", 1, 4);
-        String product = "";
-        switch (selection) {
-            case 1:
-                product = "Carpet";
-                break;
-            case 2:
-                product = "Laminate";
-                break;
-            case 3:
-                product = "Tile";
-                break;
-            case 4:
-                product = "Wood";
-            default:
-                break;
+    public String displayProducts(List<product> products) {
+        int i = 0;
+        for (product newTax : products) {
+            i = i + 1;
+            io.print(i + ". " + newTax.getProductType());
+        }
+        boolean actualState = true;
+        String state = "";
+        while (actualState) {
+            for (product newTax : products) {
+
+                if (state.equals(newTax.getProductType())) {
+                    actualState = false;
+                    break;
+                } else {
+                    actualState = true;
+                }
+            }
+            if (actualState) {
+                state = io.readString("What product would you like to order?");
+            }
 
         }
-        return product;
+
+        return state;
     }
 
-    public order editOrder(order editOrder) {
+    public order editOrder(List<tax> states, List<product> products, order editOrder) {
         if (editOrder != null) {
 
             io.print("1. Customer Name");
@@ -147,11 +163,11 @@ public class FlooringMasteryView {
                     editOrder.setCustomerName(customerName);
                     break;
                 case 2:
-                    String state = displayStates();
+                    String state = displayStates(states);
                     editOrder.setState(state);
                     break;
                 case 3:
-                    String product = displayProducts();
+                    String product = displayProducts(products);
                     editOrder.setProductType(product);
                     break;
                 case 4:
@@ -171,4 +187,8 @@ public class FlooringMasteryView {
 
     }
 
+    public LocalDate getDate() {
+        LocalDate ld = io.getDate("What is the date for the order?");
+        return ld;
+    }
 }
