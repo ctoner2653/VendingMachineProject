@@ -32,6 +32,7 @@
           class="com.sg.FlooringMastery.service.productServiceLayerImpl">
         <constructor-arg ref="productDao"/>
     </bean>
+    
     <bean id="taxDao" 
           class="com.sg.FlooringMastery.dao.taxDaoFileImpl"/>
 
