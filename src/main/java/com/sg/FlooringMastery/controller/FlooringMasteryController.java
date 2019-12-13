@@ -7,8 +7,12 @@ package com.sg.FlooringMastery.controller;
 
 import com.sg.FlooringMastery.dao.FlooringMasteryException;
 import com.sg.FlooringMastery.dto.order;
+import com.sg.FlooringMastery.dto.product;
+import com.sg.FlooringMastery.dto.tax;
 import com.sg.FlooringMastery.service.FlooringMasteryServiceLayer;
 import com.sg.FlooringMastery.ui.FlooringMasteryView;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -22,6 +26,7 @@ public class FlooringMasteryController {
         this.view = view;
         this.service = service;
     }
+    
     public void run() throws FlooringMasteryException{
         boolean keepGoing = true;
         int menuSelection = 0;
@@ -57,18 +62,33 @@ public class FlooringMasteryController {
         return view.getMenuSelection();
     }
     public void addOrder() throws FlooringMasteryException{
-        order newOrder = view.getOrderInfo();
-        service.addOrder(newOrder);
+        order newOrder = view.getOrderInfo(service.getAllProducts(),service.getAllStates());
+        LocalDate date = (view.getDate());
+        service.addOrder(newOrder,date);
     }
     public void displayOrders() throws FlooringMasteryException{
-        view.displayOrders(service.displayOrders());
+        try{
+              view.displayOrders(service.displayOrders(view.getDate()));
+        }catch (FlooringMasteryException e){
+            view.displayErrorMessage(e.getMessage());
+        }
+      
     }
     public void editOrder() throws FlooringMasteryException {
-        order editOrder = view.editOrder(service.getOrder(view.getEditOrder()));
-        service.editOrder(editOrder.getOrderNumber(), editOrder);
+        try{
+        LocalDate date = view.getDate();
+        List<tax> taxs = service.getAllStates();
+        List<product> products = service.getAllProducts();
+        order getOrder = service.getOrder(view.getEditOrder(),date);
+        order editOrder = view.editOrder(taxs,products,getOrder);
+        service.editOrder(editOrder.getOrderNumber(), editOrder,date);
+        }catch(FlooringMasteryException e){
+            view.displayErrorMessage(e.getMessage());
+        }
     }
     public void removeOrder() throws FlooringMasteryException{
-        service.removeOrder(view.removeOrder());
+        LocalDate date = view.getDate();
+        service.removeOrder(view.removeOrder(),date);
     }
     public void saveProgres() throws FlooringMasteryException{
         service.saveProgress();

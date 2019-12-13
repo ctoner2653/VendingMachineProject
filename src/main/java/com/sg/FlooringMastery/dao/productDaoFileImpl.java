@@ -9,7 +9,9 @@ import com.sg.FlooringMastery.dto.product;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -59,6 +61,12 @@ public class productDaoFileImpl implements productDao {
 
         }
         scanner.close();
+    }
+
+    @Override
+    public List<product> getAllProducts() throws FlooringMasteryException {
+        readFile();
+        return new ArrayList<product>(products.values());
     }
     
     
