@@ -24,7 +24,8 @@
    
     <bean id="FlooringMasteryDao" 
           class="com.sg.FlooringMastery.dao.FlooringMasteryDaoFileImpl"/>
-
+    <bean id="practiceDao"
+          class="com.sg.FlooringMastery.dao.practiceDaoFileImpl"/>
     <bean id="productDao" 
           class="com.sg.FlooringMastery.dao.productDaoFileImpl"/>
 
@@ -43,7 +44,7 @@
 
     <bean id="serviceLayer" 
           class="com.sg.FlooringMastery.service.FlooringMasteryServiceLayerImpl">
-        <constructor-arg ref="FlooringMasteryDao"/>
+        <constructor-arg ref="practiceDao"/>
         <constructor-arg ref="productService"/>   
         <constructor-arg ref="taxService"/>           
     </bean>
