@@ -191,4 +191,18 @@ public class FlooringMasteryView {
         LocalDate ld = io.getDate("What is the date for the order?");
         return ld;
     }
+
+    public String testVsProduction() {
+        io.print("Is This Production or Test Run?");
+        io.print("*1. Production");
+        io.print("*2. Test");
+        int number = io.readInt("Please Enter your selection (1 or 2)", 1, 2);
+        String selection = "";
+        if (number == 1) {
+            selection = "Production";
+        } else {
+            selection = "Test";
+        }
+        return selection;
+    }
 }

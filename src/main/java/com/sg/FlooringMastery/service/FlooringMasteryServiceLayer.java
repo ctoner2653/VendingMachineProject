@@ -25,5 +25,5 @@ public interface FlooringMasteryServiceLayer {
     order getOrder(int orderNumber,LocalDate date) throws FlooringMasteryException;
     List<product> getAllProducts() throws FlooringMasteryException;
     List<tax> getAllStates() throws FlooringMasteryException;
-   
+    
 }

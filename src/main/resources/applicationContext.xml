@@ -42,9 +42,15 @@
         <constructor-arg ref="taxDao"/>
     </bean>
 
-    <bean id="serviceLayer" 
+    <bean id="serviceLayerTest" 
           class="com.sg.FlooringMastery.service.FlooringMasteryServiceLayerImpl">
         <constructor-arg ref="practiceDao"/>
+        <constructor-arg ref="productService"/>   
+        <constructor-arg ref="taxService"/>           
+    </bean>
+    <bean id="serviceLayer" 
+          class="com.sg.FlooringMastery.service.FlooringMasteryServiceLayerImpl">
+        <constructor-arg ref="FlooringMasteryDao"/>
         <constructor-arg ref="productService"/>   
         <constructor-arg ref="taxService"/>           
     </bean>

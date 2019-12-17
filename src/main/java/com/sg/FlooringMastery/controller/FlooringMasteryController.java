@@ -10,29 +10,44 @@ import com.sg.FlooringMastery.dto.order;
 import com.sg.FlooringMastery.dto.product;
 import com.sg.FlooringMastery.dto.tax;
 import com.sg.FlooringMastery.service.FlooringMasteryServiceLayer;
+import com.sg.FlooringMastery.service.FlooringMasteryServiceLayerImpl;
 import com.sg.FlooringMastery.ui.FlooringMasteryView;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author colby
  */
 public class FlooringMasteryController {
+
     FlooringMasteryView view;
     FlooringMasteryServiceLayer service;
-    
-    public FlooringMasteryController(FlooringMasteryView view,FlooringMasteryServiceLayer service){
+
+    public FlooringMasteryController(FlooringMasteryView view, FlooringMasteryServiceLayer service) {
         this.view = view;
         this.service = service;
     }
-    
-    public void run() throws FlooringMasteryException{
+
+    public void switchProduction(String selection) {
+        ApplicationContext ctx
+                = new ClassPathXmlApplicationContext("applicationContext.xml");
+        if ("Production".equals(selection)) {
+            this.service = ctx.getBean("serviceLayer", FlooringMasteryServiceLayerImpl.class);
+        } else {
+            this.service = ctx.getBean("serviceLayerTest", FlooringMasteryServiceLayerImpl.class);
+        }
+    }
+
+    public void run() throws FlooringMasteryException {
         boolean keepGoing = true;
         int menuSelection = 0;
-        while(keepGoing){
+        switchProduction(view.testVsProduction());
+        while (keepGoing) {
             menuSelection = getMenuSelection();
-            switch(menuSelection){
+            switch (menuSelection) {
                 case 1:
                     displayOrders();
                     break;
@@ -43,57 +58,63 @@ public class FlooringMasteryController {
                     editOrder();
                     break;
                 case 4:
-                   removeOrder();
+                    removeOrder();
                     break;
                 case 5:
                     saveProgres();
                     break;
                 case 6:
-                    
+
                     keepGoing = false;
                     break;
-                default: 
+                default:
                     break;
             }
         }
     }
-    
-    public int getMenuSelection(){
+
+    public int getMenuSelection() {
         return view.getMenuSelection();
     }
-    public void addOrder() throws FlooringMasteryException{
-        order newOrder = view.getOrderInfo(service.getAllProducts(),service.getAllStates());
+
+    public void addOrder() throws FlooringMasteryException {
+        order newOrder = view.getOrderInfo(service.getAllProducts(), service.getAllStates());
         LocalDate date = (view.getDate());
-        service.addOrder(newOrder,date);
+        service.addOrder(newOrder, date);
     }
-    public void displayOrders() throws FlooringMasteryException{
-        try{
-              view.displayOrders(service.displayOrders(view.getDate()));
-        }catch (FlooringMasteryException e){
+
+    public void displayOrders() throws FlooringMasteryException {
+        try {
+            view.displayOrders(service.displayOrders(view.getDate()));
+        } catch (FlooringMasteryException e) {
             view.displayErrorMessage(e.getMessage());
         }
-      
+
     }
+
     public void editOrder() throws FlooringMasteryException {
-        try{
-        LocalDate date = view.getDate();
-        List<tax> taxs = service.getAllStates();
-        List<product> products = service.getAllProducts();
-        order getOrder = service.getOrder(view.getEditOrder(),date);
-        order editOrder = view.editOrder(taxs,products,getOrder);
-        service.editOrder(editOrder.getOrderNumber(), editOrder,date);
-        }catch(FlooringMasteryException e){
+        try {
+            LocalDate date = view.getDate();
+            List<tax> taxs = service.getAllStates();
+            List<product> products = service.getAllProducts();
+            order getOrder = service.getOrder(view.getEditOrder(), date);
+            order editOrder = view.editOrder(taxs, products, getOrder);
+            service.editOrder(editOrder.getOrderNumber(), editOrder, date);
+        } catch (FlooringMasteryException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
-    public void removeOrder() throws FlooringMasteryException{
+
+    public void removeOrder() throws FlooringMasteryException {
         LocalDate date = view.getDate();
-        service.removeOrder(view.removeOrder(),date);
+        service.removeOrder(view.removeOrder(), date);
     }
-    public void saveProgres() throws FlooringMasteryException{
+
+    public void saveProgres() throws FlooringMasteryException {
         service.saveProgress();
     }
-    public void exit(){
-        
+
+    public void exit() {
+
     }
 }

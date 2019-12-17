@@ -17,7 +17,6 @@ import java.util.List;
  *
  * @author colby
  */
-
 public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLayer {
 
     productServiceLayer productService;
@@ -36,10 +35,10 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
 
     @Override
-    public void addOrder(order newOrder,LocalDate date) throws FlooringMasteryException {
-        
+    public void addOrder(order newOrder, LocalDate date) throws FlooringMasteryException {
+
         int number = dao.readNumber() + 1;
-        if(number <= 0){
+        if (number <= 0) {
             number = 1;
         }
         newOrder.setOrderNumber(number);
@@ -54,12 +53,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         newOrder.setTax((newOrder.getMaterialCost() + newOrder.getLaborCost()) * actualTaxRate);
         newOrder.setTotal(newOrder.getLaborCost() + newOrder.getMaterialCost() + newOrder.getTax());
         dao.writeNumber(newOrder.getOrderNumber());
-        dao.addOrder(newOrder,date);
-        
+        dao.addOrder(newOrder, date);
+
     }
 
     @Override
-    public order editOrder(int orderNumber, order newOrder,LocalDate date) throws FlooringMasteryException {
+    public order editOrder(int orderNumber, order newOrder, LocalDate date) throws FlooringMasteryException {
         newOrder.setCostPerSquareFoot((productService.getProduct(newOrder.getProductType())).getCostPerSquareFoot());
         newOrder.setLaborCostPerSquareFoot((productService.getProduct(newOrder.getProductType())).getLaborCostPerSquareFoot());
         newOrder.setLaborCost((newOrder.getArea() * newOrder.getLaborCostPerSquareFoot()));
@@ -69,12 +68,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
         double actualTaxRate = newOrder.getTaxRate() / 100;
         newOrder.setTax((newOrder.getMaterialCost() + newOrder.getLaborCost()) * actualTaxRate);
         newOrder.setTotal(newOrder.getLaborCost() + newOrder.getMaterialCost() + newOrder.getTax());
-        return dao.editOrder(orderNumber, newOrder,date);
+        return dao.editOrder(orderNumber, newOrder, date);
     }
 
     @Override
-    public void removeOrder(int orderNumber,LocalDate date) throws FlooringMasteryException {
-        dao.removeOrder(orderNumber,date);
+    public void removeOrder(int orderNumber, LocalDate date) throws FlooringMasteryException {
+        dao.removeOrder(orderNumber, date);
     }
 
     @Override
@@ -83,14 +82,20 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasteryServiceLa
     }
 
     @Override
-    public order getOrder(int orderNumber,LocalDate date) throws FlooringMasteryException {
-        return dao.getOrder(orderNumber,date);
+    public order getOrder(int orderNumber, LocalDate date) throws FlooringMasteryException {
+        return dao.getOrder(orderNumber, date);
     }
-    public List<product> getAllProducts() throws FlooringMasteryException{
+
+    @Override
+    public List<product> getAllProducts() throws FlooringMasteryException {
         return productService.getAllProducts();
     }
-    public List<tax> getAllStates() throws FlooringMasteryException{
+
+    @Override
+    public List<tax> getAllStates() throws FlooringMasteryException {
         return taxService.getAllStates();
     }
-    
+
+   
+
 }
